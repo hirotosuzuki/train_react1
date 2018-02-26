@@ -1,12 +1,12 @@
 // @flow
 import CurrentWeather from './CurrentWeather';
-import MY_KEY from '../settings_local';
-console.log(MY_KEY)
+import {MY_KEY} from '../settings_local';
+
 const BASE_URL   = 'https://api.openweathermap.org/data/2.5/';
 const API_KEY = MY_KEY;
 
 function getCurrentWeatherEndpoint(query: string){
-  return `${BASE_URL}weather`
+  return `${BASE_URL}weather?q=${query}`
       + `&appid=${API_KEY}&lang=ja`;
 }
 
