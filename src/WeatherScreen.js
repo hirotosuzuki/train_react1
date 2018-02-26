@@ -4,7 +4,7 @@ import  {
   View,
   Text,
   Image,
-  ActivityIndecator,
+  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 import CurrentWeather from './CurrentWeather';
@@ -30,26 +30,26 @@ class WeatherScreen extends Component<{}> {
   }
 
   render(){
-    const { current } = this.state;
-    if (current==null){
+      const { current } = this.state;
+      if (current==null){
+        return (
+          <View style={styles.container}>
+            <ActivityIndicator />
+          </View>
+        );
+      }
+      const {main, iconURL} = current;
       return (
         <View style={styles.container}>
-          <ActivityIndecator />
+          <Text style={styles.text}>
+            {main}
+          </Text>
+          <Image
+            source={{uri: iconURL}}
+            style={styles.icon}
+          />
         </View>
       );
-    }
-    const {main, iconURL} = current;
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          {main}
-        </Text>
-        <Image
-          source={{uri: iconURL}}
-          style={styles.icon}
-        />
-      </View>
-    );
   }
 }
 
