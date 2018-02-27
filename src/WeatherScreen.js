@@ -14,13 +14,19 @@ import {getCurrentWeather} from './WeatherService';
 type State = {
   current: ?CurrentWeather,
 };
-
+// componentにはfunction_componentとclass_componentがあり、今回はclass
 class WeatherScreen extends Component<{}> {
+  // 内部に状態を持たせたいのでコンストラクタを呼ぶ
   constructor(props: {}){
+    // 親クラスのコンストラクタを呼ぶ
     super(props);
+    // stateの初期値を設定
     this.state =  { current: null };
   }
-
+  
+  // Componentクラスに用意されているLife Cycle Methodの一つ
+  // コンポーネントのrenderが初めて実行された後に一度だけ呼ばれる
+  // 通信やローカルデータの読み込み処理はこの中で行う
   componentDidMount(){
     getCurrentWeather('Tokyo')
       .then((current) => {
