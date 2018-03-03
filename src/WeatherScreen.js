@@ -6,27 +6,53 @@ import  {
   Image,
   ActivityIndicator,
   StyleSheet,
+  FlatList,
 } from 'react-native';
 import CurrentWeather from './CurrentWeather';
-import {getCurrentWeather} from './WeatherService';
+import WeatherForecast from './WeatherForecast';
+import ForecastListItem from './ForecastListItem';
+import {
+  getCurrentWeather,
+  getWeatherForecast,
+} from './WeatherService';
 
 // Stateのflow型を宣言
 type State = {
   current: ?CurrentWeather,
+  forecasts: WeatherForecast[],
 };
-
+// componentにはfunction_componentとclass_componentがあり、今回はclass
 class WeatherScreen extends Component<{}> {
+  // 内部に状態を持たせたいのでコンストラクタを呼ぶ
   constructor(props: {}){
+    // 親クラスのコンストラクタを呼ぶ
     super(props);
-    this.state =  { current: null };
+    // stateの初期値を設定
+    this.state =  { current: null, forecasts: [] };
   }
 
+  // Componentクラスに用意されているLife Cycle Methodの一つ
+  // コンポーネントのrenderが初めて実行された後に一度だけ呼ばれる
+  // 通信やローカルデータの読み込み処理はこの中で行う
   componentDidMount(){
-    getCurrentWeather('Tokyo')
-      .then((current) => {
-        console.log('天気予報取得完了！');
-        this.setState({current});
-      });
+    const tokyo = 'Tokyo';
+    getCurrentWeather(tokyo)
+      .then(current =>
+        this.setState({current}));
+    getWeatherForecast(tokyo)
+      .then(forecasts =>
+        this.setState({forecasts}));
+  }
+
+  renderForecasts() {
+    return (
+      <FlatList
+        data={this.state.forecasts}
+        renderItem={({ item }) =>
+          <ForecastListItem item={item} />}
+        keyExtractor={item => item.date.toString()}
+      />
+    );
   }
 
   render(){
@@ -45,9 +71,10 @@ class WeatherScreen extends Component<{}> {
             {main}
           </Text>
           <Image
-            source={{uri: iconURL}}
+            source={{ uri: iconURL }}
             style={styles.icon}
           />
+          {this.renderForecasts()}
         </View>
       );
   }

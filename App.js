@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import {MY_KEY} from './settings_local.js';
 import React, { Component } from 'react';
 import WeatherScreen from './src/WeatherScreen';
 import {View, Text} from 'react-native';
