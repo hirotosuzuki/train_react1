@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { type NavigationScreenProp } from 'react-navigation/src/TypeDefinition';
 import {
   Text,
   TouchableOpacity,
@@ -8,8 +9,14 @@ import {
 } from 'react-native';
 import CITIES from './cities.json';
 
-class CityListScreen extends Component<{}> {
+type Props = {
+  navigation: NavigationScreenProp<*>,
+}
+
+class CityListScreen extends Component<Props> {
   onPress(item: *){
+    const { navigation } = this.props;
+    navigation.navigate('Weather', { city: item });
     console.log('onPress', item);
   }
   render(){
