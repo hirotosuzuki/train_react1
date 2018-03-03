@@ -21,14 +21,9 @@ function getCurrentWeather(city: string)
       .then(json => new CurrentWeather(json));
   }
 
-  function getWeatherForecastEndpoint(city: *) {
-    const { en, latitude, longitude } = city;
-    if (latitude && longitude) {
-      return `${BASE_URL}forecast`
-        + `?lat=${latitude}&lon=${longitude}`
-        + `&appid=${API_KEY}&lang=ja`;
-    }
-    return `${BASE_URL}forecast?q=${en}&appid=${API_KEY}&lang=ja`;
+  function getWeatherForecastEndpoint(query: string) {
+    console.log(`${BASE_URL}forecast?q=${query}&appid=${API_KEY}&lang=ja`)
+    return `${BASE_URL}forecast?q=${query}&appid=${API_KEY}&lang=ja`;
   }
 
 

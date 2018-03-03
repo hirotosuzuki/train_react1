@@ -44,11 +44,12 @@ class WeatherScreen extends Component<{}> {
         this.setState({forecasts}));
   }
 
-  renderForecasts(){
-    return(
+  renderForecasts() {
+    return (
       <FlatList
         data={this.state.forecasts}
-        renderItem={({item}) => <ForecastListItem item={item} />}
+        renderItem={({ item }) =>
+          <ForecastListItem item={item} />}
         keyExtractor={item => item.date.toString()}
       />
     );
@@ -70,10 +71,10 @@ class WeatherScreen extends Component<{}> {
             {main}
           </Text>
           <Image
-            source={{uri: iconURL}}
+            source={{ uri: iconURL }}
             style={styles.icon}
           />
-        {this.renderForecasts()}
+          {this.renderForecasts()}
         </View>
       );
   }

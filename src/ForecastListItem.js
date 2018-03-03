@@ -13,6 +13,7 @@ type Props ={
   item: WeatherForecast,
 };
 
+// リストの一行を構成するComponent
 class ForecastListItem extends Component<Props>{
   render(){
     const { item } = this.props;
