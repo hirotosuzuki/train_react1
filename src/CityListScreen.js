@@ -8,12 +8,35 @@ import {
   StyleSheet,
 } from 'react-native';
 import CITIES from './cities.json';
+import { getCoordinates } from './GeolocationService';
+
+type State = {
+  data: *[],
+};
 
 type Props = {
   navigation: NavigationScreenProp<*>,
 }
 
 class CityListScreen extends Component<Props> {
+  constructor(props: Props){
+    super(props);
+    this.state = { data: CITIES };
+  }
+
+  componentDidMount(){
+    getCoordinates()
+      .then(({latitude, longitude}) => {
+        CITIES.unshift({
+          name: '現在地',
+          en: '',
+          latitude,
+          longitude,
+        });
+        this.setState({data: CITIES});
+      });
+  }
+
   onPress(item: *){
     const { navigation } = this.props;
     navigation.navigate('Weather', { city: item });
@@ -22,7 +45,7 @@ class CityListScreen extends Component<Props> {
   render(){
     return(
       <FlatList
-        data={CITIES}
+        data={this.state.data}
         keyExtractor={item => item.en}
         renderItem={({item}) => (
           <TouchableOpacity
