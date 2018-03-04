@@ -1,5 +1,6 @@
 // @flow
 import React, {Component} from 'react';
+import { type NavigationScreenProp } from 'react-navigation/src/TypeDefinition';
 import  {
   View,
   Text,
@@ -16,13 +17,23 @@ import {
   getWeatherForecast,
 } from './WeatherService';
 
+type Props = {
+  navigation: NavigationScreenProp<*>,
+};
+
 // Stateのflow型を宣言
 type State = {
   current: ?CurrentWeather,
   forecasts: WeatherForecast[],
 };
 // componentにはfunction_componentとclass_componentがあり、今回はclass
-class WeatherScreen extends Component<{}> {
+class WeatherScreen extends Component<Props, State> {
+  static navigationOptions = ({navigation}) => {
+    const { city } = navigation.state.params;
+    return {
+      title: `${city.name}の天気`,
+    };
+  }
   // 内部に状態を持たせたいのでコンストラクタを呼ぶ
   constructor(props: {}){
     // 親クラスのコンストラクタを呼ぶ
@@ -35,11 +46,13 @@ class WeatherScreen extends Component<{}> {
   // コンポーネントのrenderが初めて実行された後に一度だけ呼ばれる
   // 通信やローカルデータの読み込み処理はこの中で行う
   componentDidMount(){
-    const tokyo = 'Tokyo';
-    getCurrentWeather(tokyo)
+    // const tokyo = 'Tokyo';;
+    const { navigation } = this.props
+    const { city } = navigation.state.params;
+    getCurrentWeather(city.en)
       .then(current =>
         this.setState({current}));
-    getWeatherForecast(tokyo)
+    getWeatherForecast(city.en)
       .then(forecasts =>
         this.setState({forecasts}));
   }
